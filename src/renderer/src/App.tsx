@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Settings from './components/Settings'
-
+import { AnimatePresence, motion } from 'framer-motion'
 type ActiveMode = 'focus' | 'shortRest' | 'longRest' | 'settings'
 type PomodoroActions = {
   focus: 'pause' | 'running'
@@ -11,13 +11,22 @@ export type NotificationsActions = 'focus-end' | 'short-rest-end' | 'long-rest-e
 
 function App(): JSX.Element {
   const ipcHandle = (value: NotificationsActions): void => window.electron.ipcRenderer.send(value)
+  const [updateAvailable, setUpdateAvailable] = useState(false)
+  // const [confirmUpdate, setConfirmUpdate] = useState(false)
+  // const [newVersion, setNewVersion] = useState<null | string>(null)
 
-  window.electron.ipcRenderer.on('update', () => {
-    console.log('Verificando se há atualizações...')
-    console.log('Uma nova atualização está disponível!')
-    console.log('Você já está usando a versão mais recente!')
-    console.log('Atualização baixada:', 'releaseName')
-  })
+  useEffect(() => {
+    const listener = () => {
+      setUpdateAvailable(true)
+    }
+  
+    window.api.on('update-downloaded', listener)
+  
+    return () => {
+      window.api.removeListener('update-downloaded', listener)
+    }
+  }, [])
+  
 
   const [activeMode, setActiveMode] = useState<ActiveMode>('focus')
   const [pomodoroInicialTime, setPomodoroInitialTime] = useState({
@@ -171,6 +180,28 @@ function App(): JSX.Element {
           )}
         </div>
       </main>
+      <AnimatePresence>
+        {updateAvailable && (
+          <motion.div
+            initial={{ scale: 0.7, bottom: '-8rem', opacity: 0 }}
+            exit={{ scale: 0.7, bottom: '-8rem', opacity: 0 }}
+            animate={{ scale: 1, bottom: '4rem', opacity: 1 }}
+            className="fixed right-[4rem] bg-zinc-800 p-[1.4rem] rounded-[1rem] border border-zinc-600 w-[30rem]"
+          >
+            <p className="text-zinc-100 text-[1.3rem] max-w-[80%] leading-[1.3]">
+              Uma nova versão está disponível para download, deseja atualiza agora?
+            </p>
+            <div className="flex items-center gap-[1rem]">
+              <button onClick={()=> window.api.send("confirm-update")} className="bg-zinc-100 text-zinc-900 p-[.8rem] rounded-[1rem] text-[1.2rem] block mt-[1.2rem]">
+                Atualizar agora
+              </button>
+              <button onClick={()=> setUpdateAvailable(false)} className="bg-zinc-700 text-zinc-100 p-[.8rem] rounded-[1rem] text-[1.2rem] block mt-[1.2rem]">
+                Cancelar
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   )
 }

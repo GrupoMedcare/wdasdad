@@ -1,3 +1,5 @@
-provider: github
-url: https://github.com/GrupoMedcare/wdasdad/releases
-updaterCacheDirName: pomodoro-updater
+publish:
+  provider: github
+  repo: https://github.com/GrupoMedcare/wdasdad
+  owner: GrupoMedcare
+  releaseType: release

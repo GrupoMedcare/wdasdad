@@ -1,5 +1,5 @@
-appId: com.electron.app
-productName: pomodoro
+appId: com.wdasdad
+productName: wdasdad
 directories:
   buildResources: build
 files:
@@ -12,12 +12,14 @@ files:
 asarUnpack:
   - resources/**
 win:
-  executableName: pomodoro
+  executableName: wdasdad
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
   uninstallDisplayName: ${productName}
-  createDesktopShortcut: always
+  oneClick: false 
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: false
 mac:
   entitlementsInherit: build/entitlements.mac.plist
   extendInfo:
@@ -40,6 +42,6 @@ appImage:
 npmRebuild: false
 publish:
   provider: github
-  repo: https://github.com/GrupoMedcare/wdasdad
   owner: GrupoMedcare
+  repo: wdasdad
   releaseType: release
