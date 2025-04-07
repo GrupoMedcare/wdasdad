@@ -1,0 +1,44 @@
+@import 'tailwindcss';
+
+@font-face {
+  src: url('../assets/lexend.ttf') format('truetype');
+  font-family: Lexend;
+  font-display: swap;
+}
+
+@theme inline {
+  --font-lexend: Lexend;
+}
+
+@layer base {
+  body {
+    @apply bg-zinc-900;
+    /* -webkit-app-region: drag; */
+  }
+  html {
+    @apply text-[10px];
+  }
+  * {
+    @apply leading-none font-lexend;
+  }
+}
+
+button {
+  @apply cursor-pointer;
+}
+
+.action-buttons button {
+  @apply p-[1rem] text-[1.4rem] font-medium rounded-[1rem] duration-300 text-zinc-400 cursor-pointer block;
+}
+
+.action-buttons button[data-active='true'] {
+  @apply bg-zinc-300 text-zinc-900;
+}
+
+.inputs-time {
+  @apply flex max-w-[50%] gap-[1rem] mt-[.4rem];
+}
+
+.inputs-time input {
+  @apply bg-zinc-800 text-zinc-100 text-[1.6rem] flex-[1_1_30%] w-[30%] p-[1rem] rounded-[1rem] outline-none;
+}

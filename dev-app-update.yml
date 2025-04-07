@@ -1,0 +1,3 @@
+provider: github
+url: https://github.com/GrupoMedcare/wdasdad/releases
+updaterCacheDirName: pomodoro-updater
